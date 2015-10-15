@@ -1,0 +1,14 @@
+//
+//  PrefixHeader.pch
+//  GOTour
+//
+//  Created by 磊 田 on 15/10/11.
+//  Copyright © 2015年 tianLei. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#import "Common.h"
+
+#endif /* PrefixHeader_pch */
