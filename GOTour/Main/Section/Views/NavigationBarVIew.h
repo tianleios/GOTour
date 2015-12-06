@@ -10,13 +10,18 @@
 
 typedef void(^SaveLikeBlock)(void);
 typedef void(^DeleteLikeBlock)(void);
+typedef void(^ShareBlock)(void);
+
 
 @interface NavigationBarVIew : UIView
 
 @property (nonatomic, copy) SaveLikeBlock saveBlock;
 @property (nonatomic, copy) DeleteLikeBlock deleteBlock;
+@property (nonatomic, copy) ShareBlock shareBlock;
 
 
-+ (instancetype)createNavigationBar:(CGRect)frame save:(SaveLikeBlock)save delete:(DeleteLikeBlock)delete;
+@property (nonatomic, weak) UIButton *likeBut;
+
++ (instancetype)createNavigationBar:(CGRect)frame save:(SaveLikeBlock)save delete:(DeleteLikeBlock)delete share:(ShareBlock)share;
 
 @end

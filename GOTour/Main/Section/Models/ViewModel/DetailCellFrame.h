@@ -21,4 +21,6 @@
 
 @property (nonatomic, assign) CGFloat rowHeight;
 
+@property (nonatomic, strong) NSMutableArray *imageUrls;
+
 @end

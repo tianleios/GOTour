@@ -20,10 +20,16 @@
     _expense = selectM.expense;
     [self expense];
     
-    //shijian
+    //时间
     _timeCellHeight = 60;
     _timeCellFrame = CGRectMake(10, kMargin, kScreenWidth - 20, 40);
-  
+    
+    //电话网站
+    
+  CGSize size = [NSString calculateStringSize:CGSizeMake(kScreenWidth - 3*kMargin, MAXFLOAT) string:_selectM.contact font:[UIFont systemFontOfSize:15]];
+    _orderCellHeight = size.height + 45;
+    
+    
 }
 -(void)expense
 {

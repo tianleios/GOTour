@@ -54,7 +54,7 @@
     
    //图片
     _imageV.frame = CGRectMake(0, 0, kScreenWidth, kScreenWidth/1.6);
-    
+    _imageV.clipsToBounds = YES;
     if (_imageCache == nil) {
         
         NSURL *url = [NSURL URLWithString:_selectM.bg_pic[0]];

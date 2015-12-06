@@ -26,6 +26,12 @@
 
     self.navigationController.navigationBar.hidden = NO;
 }
+
+-(void)dealloc
+{
+    NSLog(@"themenext销毁");
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
 //    self.navigationController.navigationBar.hidden = NO;
@@ -35,7 +41,7 @@
     //请求数据
     [self requsetData];
 //    NSLog(@"%f",self.tableView.frame.origin.y);
-    
+ 
 //    self.tableView.style = UITableViewStyleGrouped;
     
 }
@@ -63,7 +69,7 @@
                 [_selects addObject:model];
             }
          
-            NSLog(@"%@",model.ID);
+            
         }
         [self createTableView];
 
@@ -80,7 +86,7 @@
 {
     CGFloat y = CGRectGetMaxY(self.navigationController.navigationBar.frame);
     
-    UITableView *tableV = [[UITableView alloc]initWithFrame:CGRectMake(0,y, kScreenWidth, kScreenHeight ) style:UITableViewStylePlain];
+    UITableView *tableV = [[UITableView alloc]initWithFrame:CGRectMake(0,y, kScreenWidth, kScreenHeight - y ) style:UITableViewStylePlain];
     
     _detailTableView = tableV;
     _detailTableView.delegate = self;
@@ -99,6 +105,7 @@
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    [[SDImageCache sharedImageCache] clearMemory];
     // Dispose of any resources that can be recreated.
 }
 
@@ -127,5 +134,6 @@
     return kScreenWidth/1.6 + 4;
 
 }
+
 
 @end

@@ -9,6 +9,8 @@
 #import "TLDetailViewController.h"
 #import "MapViewVC.h"
 #import "LikeUserLIstTVC.h"
+#import "WebViewController.h"
+#import <Social/Social.h>
 
 #import "NavigationBarVIew.h"
 #import "SelectModel.h"
@@ -28,6 +30,7 @@
 #import "TimeCell.h"
 #import "LocationCell.h"
 #import "LikeCell.h"
+#import "OrderCell.h"
 
 #import "AFNetworking.h"
 #import "MJExtension.h"
@@ -35,7 +38,7 @@
 #import "CellAssessoryBut.h"
 #import "LoadMoreBut.h"
 #import "TLTitleView.h"
-
+#import "ShareView.h"
 #define kScrollMargin 20
 #define kFootViewHeight 30
 #define kCommentUrl @"http://appsrv.flyxer.com/api/comment/recomm/"
@@ -62,6 +65,7 @@
 @property (nonatomic, assign) BOOL moreFlag; //加载更多相关标志
 @property (nonatomic, assign) BOOL isHiddenLoadMore; //加载更多相关标志
 
+@property (nonatomic, strong) ShareView *shareView;
 
 //关于详情页面下方的字典
 @property (nonatomic, strong) NSMutableDictionary *detailBootomDict;
@@ -73,19 +77,36 @@
 //标志字典 判断cell展开还是 收缩
 @property (nonatomic, strong) NSMutableDictionary *flagDict;
 
+/**
+ * 图片浏览器需要的str
+ */
+//@property (nonatomic, strong) NSMutableArray *imageStrs;
+
+@property (nonatomic, strong) NSMutableArray *imageUrls;
+
+
 @end
 
 @implementation TLDetailViewController
+{
+
+    UIButton *shareBut;
+}
+
+
 -(void)dealloc
 {
-    NSLog(@"销毁了");
+    
+    NSLog(@"TLDetailViewController销毁了");
+    
 }
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
    
     [self addNavigationBarItem];
     self.navigationController.navigationBar.hidden = YES;
-//    _isHiddenLoadMore = NO;
      self.view.backgroundColor = [UIColor whiteColor];
 
     _moreFlag = YES;
@@ -94,7 +115,7 @@
     [self createFlagDict];
 
     //顶部大图片
-    [self createTopImage];
+    [self createTopImageAndShareView];
    //数据保存
 //      [TLHTTPTool saveDataWithModel:_selectM imageV:_topIV];
     
@@ -108,6 +129,47 @@
     //tableView
     [self createTableView];
     
+    
+    
+}
+
+#pragma - mark 三方分享
+- (void)sinaWeibo
+{
+    
+    
+    
+    [UMSocialSnsService presentSnsIconSheetView:self
+                                         appKey:@"562b060c67e58e45640004fd"
+                                      shareText:@"你要分享的文字"
+                                     shareImage:nil
+                                shareToSnsNames:[NSArray arrayWithObjects:UMShareToSina,UMShareToWechatFavorite,UMShareToWechatTimeline,nil]
+                                       delegate:self];
+    
+    //判读 是否能进行分享
+    
+//    if (![SLComposeViewController isAvailableForServiceType:SLServiceTypeSinaWeibo]) {
+//        
+//        NSLog(@"不能进行分享");
+//    }
+//    
+//    
+//    
+//    SLComposeViewController *compose = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeSinaWeibo];
+//    
+//    [compose setInitialText:_selectM.short_desc];
+    
+//   NSDate *imageData = UIImageJPEGRepresentation(self.imageCache, 0.1);
+//    UIImage *image = [UIImage imageWithData:imageData];
+//    [compose addImage:image];
+    
+//    [self presentViewController:compose animated:YES completion:^{
+//        
+//    }];
+
+
+
+
 }
 - (void)createFlagDict
 {
@@ -146,7 +208,7 @@
         [_detailTableView insertRowsAtIndexPaths:@[path] withRowAnimation:YES];
     }else{
         [self changeFlagAndIncrementByKey:key];
-        [_detailTableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationBottom];
+        [_detailTableView deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationFade];
     }
 
 
@@ -166,10 +228,11 @@
                            @"page":@"1",
                            @"size" :@"5"
                            };
+    __weak TLDetailViewController *weakVC = self;
     [manager GET:urlStr parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
         NSDictionary *dictonary = responseObject;
-        _comment = [CommentModel objectWithKeyValues:dictonary];
+        weakVC.comment = [CommentModel objectWithKeyValues:dictonary];
         
 //        //加载评论需要的条件
 //        [self loadLastCellData];
@@ -183,17 +246,66 @@
 {
 
     UIImage *shareImage = [UIImage imageNamed:@"btn_share_red.png"];
-    UIButton *shareBut = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
+    shareBut = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 40, 40)];
     [shareBut setImage:shareImage forState:UIControlStateNormal];
+   
+    [shareBut addTarget:self action:@selector(shareAction) forControlEvents:UIControlEventTouchUpInside];
+
     UIBarButtonItem *item1 = [[UIBarButtonItem alloc]initWithCustomView:shareBut];
     
     UIImage *likeImage = [UIImage imageNamed:@"activity_btnUnLike_red.png"];
     UIButton *likeBut = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, 50, 50)];
     likeBut.contentMode = UIViewContentModeScaleToFill;
     [likeBut setImage:likeImage forState:UIControlStateNormal];
+    [likeBut setImage:[UIImage imageNamed:@"activity_btnLike.png"] forState:UIControlStateSelected];
+    [likeBut addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc]initWithCustomView:likeBut];
 
     self.navigationItem.rightBarButtonItems =@[item2,item1];
+}
+- (void)likeAction:(UIButton *)but
+{
+    if (but.selected == NO) {
+        
+        [TLHTTPTool saveDataWithModel:_selectM imageV:self.topIV];
+        
+    }else{
+        
+        [TLHTTPTool deleteDataByID:self.selectM.ID];
+    }
+    
+    but.selected = !but.selected;
+
+
+}
+- (void)shareAction
+{
+    [self sinaWeibo];
+//    UIControl *control = [[UIControl alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+//    [control addTarget:self action:@selector(hiddenAction:) forControlEvents:UIControlEventTouchUpInside];
+//    control.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+//    [self.view.window addSubview:control];
+//    
+//    _shareView = [[ShareView alloc] initWithFrame:CGRectMake(0, kScreenHeight, kScreenWidth, kScreenWidth/2)];
+//    
+//    [control addSubview:_shareView];
+//    
+//    [UIView animateWithDuration:0.4 animations:^{
+//        _shareView.transform = CGAffineTransformMakeTranslation(0, -kScreenWidth/2);
+//    }];
+    
+}
+- (void)hiddenAction:(UIControl *)control
+{
+    __weak TLDetailViewController *weakSelf = self;
+    
+    [UIView animateWithDuration:0.4 animations:^{
+        weakSelf.shareView.transform = CGAffineTransformIdentity;
+        
+    } completion:^(BOOL finished) {
+        control.hidden  = YES;
+    }];
+
 }
 #pragma - mark 创建tableView
 - (void)createTableView
@@ -202,14 +314,13 @@
     
     [self.view insertSubview:tableV aboveSubview:_topIV];
     _detailTableView = tableV;
-//    _detailTableView.backgroundColor = [UIColor clearColor];
-//    _detailTableView.backgroundView = nil;
+
     _detailTableView.delegate = self;
     _detailTableView.dataSource = self;
     _detailTableView.backgroundColor = [UIColor clearColor];
     _detailTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
-- (void)createTopImage
+- (void)createTopImageAndShareView
 {
     _topIV = [[UIImageView alloc]initWithFrame:CGRectMake(0, -kScrollMargin, kScreenWidth, 3*kScreenHeight/8 + 2*kScrollMargin)];
     [self.view addSubview:_topIV];
@@ -227,22 +338,32 @@
 }
 -(void)navigationBarView
 {
-//    NavigationBarVIew *barView = [[NavigationBarVIew alloc]initWithFrame:];
-//    barView.saveBlock = ^{
-//        
-//        [TLHTTPTool saveDataWithModel:_selectM imageV:_topIV];
-//        
-//    };
+    __weak TLDetailViewController *weakSelf = self;
     NavigationBarVIew *barView = [NavigationBarVIew createNavigationBar:self.navigationController.navigationBar.frame save:^{
         
-        [TLHTTPTool saveDataWithModel:_selectM imageV:_topIV];
+        [TLHTTPTool saveDataWithModel:weakSelf.selectM imageV:weakSelf.topIV];
         
     } delete:^{
         
-        [TLHTTPTool deleteDataByID:_selectM.ID];
+        if (_dataID == nil) {
+            
+            [TLHTTPTool deleteDataByID:weakSelf.selectM.ID];
+        }else{
+            NSLog(@"%@",weakSelf.dataID);
+            [TLHTTPTool deleteDataByID:weakSelf.dataID];
+        }
         
+        
+    } share:^{
+        [weakSelf shareAction];
     }];
     
+    if (_isLike == YES) {
+        
+      barView.likeBut.selected = YES;
+        
+    }
+  
     [self.view addSubview:barView];
    
 }
@@ -291,6 +412,19 @@
         
     }
 
+    if (indexPath.section == 6) {
+        
+        if([self getFlagByKey:kOrder] || indexPath.row == 0)
+        {
+            return 40;
+            
+        }else{
+            return _detailBootomCellFrame.orderCellHeight;
+        }
+        
+    }
+    
+
     if (indexPath.section > 4) {
         return 40;
     }
@@ -331,9 +465,11 @@
      if (_isHiddenLoadMore == NO) {
     
         CGRect frame = CGRectMake(200, 10, 100,kFootViewHeight);
-        
+         __weak TLDetailViewController *weakVC =self;
         LoadMoreBut *loadMoreBut = [LoadMoreBut createLoadMoreButtonWithFrame:frame flag:_moreFlag actionBlock:^{
-            [self loadMoreAction];
+            
+            [weakVC loadMoreAction];
+            
         }];
         
 
@@ -404,8 +540,16 @@
             return 2;
         }
     }
+    if (section == 6 ) {
+        
+        if ([self getFlagByKey:kOrder]) {
+            return 1;
+        }else{
+            return 2;
+        }
+    }
 
-    if (section > 5) {
+    if (section == 7) {
         return 1;
     }
     
@@ -449,8 +593,21 @@
         }
         
     }
-
-    if (indexPath.section > 5) {
+    //订购方式和电话
+    if (indexPath.section == 6) {
+        
+        if (indexPath.row == 0) {
+            
+            return [self createLastCell:tableView indexPath:indexPath];
+            
+        }else{
+            
+            return [self createLastSecondCell:tableView indexPath:indexPath];
+            
+        }
+        
+    }
+    if (indexPath.section == 7) {
         
     return [self createLastCell:tableView indexPath:indexPath];
   
@@ -469,18 +626,30 @@
     if (indexPath.section == 5 ) {
         cell = [TimeCell createCellWith:_detailBootomCellFrame];
     }
-
+    if (indexPath.section == 6) {
+        __weak TLDetailViewController *weakself = self;
+        cell = (OrderCell *)[OrderCell createCellWithTableView:tableView model:_selectM go:^{
+            
+            WebViewController *web = [[WebViewController alloc] init];
+            web.urlString = _selectM.order_url;
+            
+            [weakself.navigationController pushViewController:web animated:YES];
+            
+        }];
+        
+    }
     return cell;
 }
 //底部固定的cell
 -(UITableViewCell *)createLastCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath
 {
+    __weak TLDetailViewController *weakself = self;
     LastCell *cell = nil;
     if (indexPath.section == 4) {
         NSString *price = _selectM.price;
-    
+        
         cell =[LastCell createCell:@"费用" accessaryType:YES rightTitle:price action:^{
-            [self accessoryActionWithKey:kExpense row:1 section:4];
+            [weakself accessoryActionWithKey:kExpense row:1 section:4];
 
         }];
         //如果没有花费详情
@@ -494,7 +663,7 @@
         
         cell =[LastCell createCell:@"时间" accessaryType:YES rightTitle:nil action:^{
             
-            [self accessoryActionWithKey:kTime row:1 section:5];
+            [weakself accessoryActionWithKey:kTime row:1 section:5];
            
         }];
         
@@ -502,6 +671,8 @@
     if (indexPath.section == 6) {
         
        cell =[LastCell createCell:@"预定方式" accessaryType:YES rightTitle:nil  action:^{
+           
+           [weakself accessoryActionWithKey:kOrder row:1 section:6];
             NSLog(@"预定方式");
         }];
         
@@ -520,32 +691,36 @@
 //顶部固定cell
 -(UITableViewCell *)createTopCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath
 {
+    __weak TLDetailViewController *weakSelf = self;
     UITableViewCell *cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     if (indexPath.section == 0) {
         cell.backgroundView = nil;
         cell.backgroundColor = [UIColor clearColor];
         TLTitleView *view = [[TLTitleView alloc] initWithFrame:CGRectMake(2*kMargin, kScreenHeight *3/8 - 40, kScreenWidth - 2*kMargin, 40)];
         [cell.contentView addSubview:view];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [view addTitle:_selectM.title subTitle:_selectM.sub_title topBootomScale:0.4 titleFont:18 subTitleFont:13];
     }
     if (indexPath.section == 1) {
-        __weak TLDetailViewController *weakSelf = self;
+        
         LikeCell *cell = [LikeCell createLikeCellWithLikeUser:_selectM.like_user];
         cell.moreBlock = ^{
+            
             LikeUserLIstTVC *listVC = [[LikeUserLIstTVC alloc] init];
-            listVC.ID = _selectM.ID;
+            listVC.ID = weakSelf.selectM.ID;
             [weakSelf.navigationController pushViewController:listVC animated:YES ];
         };
         return cell;
         
     }
     if (indexPath.section == 2) {
-        LocationCell *cell = [LocationCell createCellWithAdress:_selectM.address mapBlock:^{
+        LocationCell *cell = [LocationCell createCellWithModel:_selectM mapBlock:^{
             
             MapViewVC *vc = [[MapViewVC alloc]init];
-            vc.locationModel = _selectM.location;
-            vc.locationName = _selectM.address;
-            [self.navigationController pushViewController:vc animated:YES];
+            vc.locationModel = weakSelf.selectM.location;
+            vc.locationName = weakSelf.selectM.address;
+            
+            [weakSelf.navigationController pushViewController:vc animated:YES];
             NSLog(@"打开地图");
             
         }];
@@ -581,7 +756,9 @@
     
     // 图片
     ImageCell *cell = [ImageCell createCellWith:tableView];
+    cell.imageUrls = _imageUrls;
     cell.frameM = frame;
+    
     return cell;
     
 
@@ -619,6 +796,8 @@
 #pragma  mark 获取数据
 - (void)setSelectM:(SelectModel *)selectM
 {
+    _imageUrls = [NSMutableArray array];
+    
     _selectM = selectM;
     NSArray *array = _selectM.details;
     _frames = [[NSMutableArray alloc]initWithCapacity:array.count];
@@ -637,13 +816,22 @@
         frame.detailM = model;
         
         [_frames addObject:frame];
+        
+        if ([model.type isEqualToString:@"pic"]) {
+            
+            [_imageUrls addObject:model.content.url];
+        }
     }
     
     _firstLoadCount = _firstLoadCount + 2;
+    
     _loadCount =  _firstLoadCount;
     //是否小于 避免崩溃
     if (_loadCount <= _frames.count) {
         
+        if (_loadCount == _frames.count) {
+             _isHiddenLoadMore = YES;
+        }
         
     }else{
         
@@ -654,7 +842,6 @@
         }
         _isHiddenLoadMore = YES; //隐藏加载更多按钮
     }
-    NSLog(@"_isHiddenLoadMore%d1",_isHiddenLoadMore);
     _detailBootomCellFrame = [[DetailBootomCellFrame alloc]init];
     
     //为底部 伤心的四个 设置模型
@@ -664,7 +851,9 @@
 #pragma  - mark 获取详情底部数据
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    NSLog(@"收到内存警告");
+    [[SDImageCache sharedImageCache] clearMemory];
+//    [[SDImageCache sharedImageCache] setValue:nil forKey:@"memCache"];
+    NSLog(@"tldetail收到内存警告");
 }
 
 /*

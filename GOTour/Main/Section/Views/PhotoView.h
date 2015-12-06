@@ -8,6 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PhotoView : UIImageView
+@interface PhotoView : UIImageView <UIAlertViewDelegate>
+
+@property (nonatomic, copy) NSString *urlStr;
+@property (nonatomic, strong) NSArray *imageUrls;
+
 
 @end

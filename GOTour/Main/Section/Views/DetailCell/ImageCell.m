@@ -10,9 +10,11 @@
 #import "DetailCellFrame.h"
 #import "DetailModel.h"
 #import "ContentModel.h"
+#import "PhotoView.h"
 @implementation ImageCell
 {
     UIImageView *_imageV;
+    PhotoView *_photo;
 
 }
 
@@ -23,6 +25,7 @@
     
     if (cell == nil) {
         cell = [[ImageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:ID];
+        
     }
     return cell;
 }
@@ -31,9 +34,12 @@
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         
-         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        _imageV = [[UIImageView alloc]init];
-        [self.contentView addSubview:_imageV];
+//         self.selectionStyle = UITableViewCellSelectionStyleNone;
+//        _imageV = [[UIImageView alloc]init];
+//        [self.contentView addSubview:_imageV];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
+        _photo = [[PhotoView alloc]init];
+        [self addSubview:_photo];
     }
     return self;
 }
@@ -42,9 +48,12 @@
 {
     _frameM = frameM;
     
-    _imageV.frame = frameM.imageFrame;
-    NSURL *url = [NSURL URLWithString:_frameM.detailM.content.url];
-    [_imageV sd_setImageWithURL:url   placeholderImage:[UIImage imageNamed:@"home_prospect_tb.png"]];
+//    _imageV.frame = frameM.imageFrame;
+//    NSURL *url = [NSURL URLWithString:_frameM.detailM.content.url];
+//    [_imageV sd_setImageWithURL:url   placeholderImage:[UIImage imageNamed:@"home_prospect_tb.png"]];
+    _photo.frame = frameM.imageFrame;
+    _photo.imageUrls = self.imageUrls;
+    _photo.urlStr = _frameM.detailM.content.url;
 
 }
 

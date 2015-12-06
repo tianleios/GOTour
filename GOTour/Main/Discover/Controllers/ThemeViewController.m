@@ -18,7 +18,11 @@
 static NSString * const reuseIdentifier = @"Cell";
 
 @implementation ThemeViewController
-
+-(void)dealloc
+{
+    NSLog(@"themeviewl销毁");
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"专辑";
@@ -37,6 +41,7 @@ static NSString * const reuseIdentifier = @"Cell";
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    [[SDImageCache sharedImageCache] clearMemory];
     // Dispose of any resources that can be recreated.
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath

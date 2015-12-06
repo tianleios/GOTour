@@ -11,6 +11,8 @@
 @interface ImageCell : UITableViewCell
 
 @property (nonatomic, strong) DetailCellFrame *frameM;
+@property (nonatomic, strong) NSArray *imageUrls;
+
 
 + (instancetype)createCellWith:(UITableView *)tableView;
 @end

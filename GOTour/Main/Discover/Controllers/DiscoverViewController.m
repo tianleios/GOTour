@@ -8,6 +8,7 @@
 
 #import "DiscoverViewController.h"
 
+#import "SearchViewController.h"
 #import "ThemeViewController.h"
 #import "NextDetailViewController.h"
 #import "ThemeNextTVC.h"
@@ -85,8 +86,16 @@
 //    home_search2.png
     UIButton *but = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
     [but setImage:[UIImage imageNamed:@"home_search2.png"] forState:UIControlStateNormal];
+    [but addTarget:self action:@selector(searchAction) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithCustomView:but];
     self.navigationItem.rightBarButtonItem  = leftItem;
+
+}
+
+- (void)searchAction
+{
+    SearchViewController *searchVC = [[SearchViewController alloc] init];
+    [self.navigationController pushViewController:searchVC animated:YES];
 
 }
 -(void)loadData
@@ -117,10 +126,9 @@
     _flowLayout = layout;
     //collectionView
     CGFloat h = CGRectGetMaxY(self.navigationController.navigationBar.frame);
-    NSLog(@"%f",self.navigationController.navigationBar.frame.size.height);
-    NSLog(@"%f",h);
+   
     CGRect frame = CGRectMake(0, h, kScreenWidth, kScreenHeight - h - 49);
-    NSLog(@"%f %f",kScreenHeight,kScreenWidth);
+  
     UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:frame collectionViewLayout:layout];
     [self.view addSubview:collectionView];
     _collectionView = collectionView;
@@ -159,7 +167,7 @@
         [self goToThemeDetail:indexPath collectionView:collectionView];
     }
     if (indexPath.section == 4) {
-          [MBProgressHUD showHUDAddedTo:_collectionView animated:YES];
+//          [MBProgressHUD showHUDAddedTo:_collectionView animated:YES];
         [self goToOneWeakHot:indexPath collectionView:collectionView];
     }
     if (indexPath.section == 2) {
@@ -194,6 +202,11 @@
 - (void)goToOneWeakHot:(NSIndexPath *)indexPath collectionView:(UICollectionView *)collectionView
 {
     TopSellectionCell *cell = (TopSellectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    
+   MBProgressHUD * _hud = [MBProgressHUD showHUDAddedTo:cell animated:YES];
+    _hud.color = [UIColor colorWithWhite:0 alpha:0.8];
+    _hud.xOffset = -kScreenWidth/4;
+//    TopSellectionCell *cell = (TopSellectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
     NSString *ID =  [cell.topModel.selection.ID stringValue];
     
     NSString *urlStr = [kTopOneWeakUrl stringByAppendingString:ID];
@@ -207,8 +220,15 @@
         dvc.selectM = [SelectModel objectWithKeyValues:responseObject];
         [self.navigationController pushViewController:dvc animated:YES];
         [_progressHUD hide:YES];
+        [_hud hide:YES];
     } fail:^(id error) {
         
+        _hud.mode = MBProgressHUDModeText;
+        _hud.labelText = @"失败";
+        [_hud hide:YES afterDelay:1.5];
+//        [_hud hide:YES];
+        
+
     }];
 
 
@@ -233,7 +253,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
-        return CGSizeMake(kScreenWidth, 200);
+        return CGSizeMake(kScreenWidth, 180);
     }
     if (indexPath.section == 1) {
          CGFloat w = (kScreenWidth- 6*kMinSpace)/5;
@@ -395,9 +415,27 @@
    
 }
 #pragma mark 代理方法
+//- (void)
+//- (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath NS_AVAILABLE_IOS(8_0);
+
+- (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0) {
+        ArticleCell *cell = (ArticleCell*)[collectionView cellForItemAtIndexPath:indexPath];
+        [cell.scrollView.timer invalidate];
+   
+    }
+    
+
+}
+
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    [[SDImageCache sharedImageCache] clearMemory];
+
     // Dispose of any resources that can be recreated.
 }
 

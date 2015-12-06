@@ -16,11 +16,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor orangeColor];
+    
+    UISearchBar *bar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth*3.5/5, 60)];
+    bar.searchBarStyle = UISearchBarStyleMinimal;
+    
+    self.navigationItem.titleView = bar;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    [[SDImageCache sharedImageCache] clearMemory];
+
     // Dispose of any resources that can be recreated.
 }
 

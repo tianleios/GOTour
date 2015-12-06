@@ -48,6 +48,7 @@
     MyAnnotation *annotation = [[MyAnnotation alloc] init];
     annotation.coordinate = CLLocationCoordinate2DMake(lat1, lng1);
     annotation.title = _locationName;
+//    CLLocation
     [_mapView addAnnotation:annotation];
     
 }
@@ -65,6 +66,7 @@
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    [[SDImageCache sharedImageCache] clearMemory];
     // Dispose of any resources that can be recreated.
 }
 

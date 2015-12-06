@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class SelectModel;
 @interface LocationCell : UITableViewCell
 
 typedef void(^MapBlock)(void);
-+(instancetype)createCellWithAdress:(NSString *)adress mapBlock:(MapBlock)block;
++(instancetype)createCellWithModel:(SelectModel *)model mapBlock:(MapBlock)block;
 
 @property (nonatomic, copy) MapBlock block;
 @end

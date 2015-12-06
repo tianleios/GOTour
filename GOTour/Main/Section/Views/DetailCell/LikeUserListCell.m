@@ -60,9 +60,8 @@
     _title.frame = CGRectMake(w + 2*kMargin , kMargin , kScreenWidth - w - 2*kMargin , w/2);
     
     _title.text = _referrer.username;
-    NSLog(@"_referrer.username%@",_referrer.username);
 
-    NSLog(@"_title.text%@",_title.text);
+
  
     _subTitle.frame = CGRectMake(w +2*kMargin , kMargin + w/2 , kScreenWidth - w - 2*kMargin , 15);
     _subTitle.text = _referrer.intro;

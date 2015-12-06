@@ -8,7 +8,9 @@
 
 #import "AppDelegate.h"
 #import "MainTabBarController.h"
-
+#import "TLTabBarController.h"
+#import "UMSocialSinaHandler.h"
+#import "UMSocial.h"
 @interface AppDelegate ()
 
 @end
@@ -18,13 +20,31 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+//    [self willChangeValueForKey:<#(nonnull NSString *)#>];
+    
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window makeKeyAndVisible];
-    self.window.rootViewController = [[MainTabBarController alloc]init];
+    self.window.rootViewController = [[TLTabBarController alloc]init];
+    
+    [UMSocialData setAppKey:@"562b060c67e58e45640004fd"];
+    [UMSocialSinaHandler openSSOWithRedirectURL:@"http://sns.whalecloud.com/sina2/callback"];
     
     return YES;
 }
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return  [UMSocialSnsService handleOpenURL:url];
+}
 
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation
+{
+    
+    return  [UMSocialSnsService handleOpenURL:url];
+    
+}
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.

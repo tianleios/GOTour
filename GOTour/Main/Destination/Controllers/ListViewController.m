@@ -32,6 +32,10 @@
 @end
 
 @implementation ListViewController
+-(void)dealloc
+{
+    NSLog(@"dealloc listView被销毁");
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -108,10 +112,10 @@
 #pragma - mark 下拉刷新调用的请求数据方法
 - (void)NextRequestData
 {
-    NSLog(@"调用了");
+   
    
     if (_count < 4) {
-        NSLog(@"%ld___",(long)_count);
+    
         _refreshDict = [[NSMutableDictionary alloc]initWithCapacity:2];
         _refreshDict[@"page"] = [NSString stringWithFormat:@"%ld",(long)_count];
         _refreshDict[@"v"] = @"2";
@@ -164,7 +168,7 @@
     
     [self.view addSubview:tableV];
     _tableView = tableV;
-    _tableView.rowHeight = 90;
+    _tableView.rowHeight = kScreenWidth/3.9 +kMargin;
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -180,7 +184,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TLDetailViewController *tlVC = [[TLDetailViewController alloc] init];
-    NSLog(@"indexPath.row%ld",(long)indexPath.row);
+   
     SelectModel *model = _selects[indexPath.row];
     tlVC.selectM = model;
     [self.navigationController pushViewController:tlVC animated:YES];
@@ -193,7 +197,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"_selects.count%ld",(unsigned long)_selects.count);
+    
 
     return _selects.count;
     
@@ -218,6 +222,7 @@
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    [[SDImageCache sharedImageCache] clearMemory];
     // Dispose of any resources that can be recreated.
 }
 

@@ -12,11 +12,13 @@
 
 -(instancetype)init
 {
+    
     if (self = [super init]) {
         self.textColor = [UIColor whiteColor];
        self.font = [UIFont boldSystemFontOfSize:13];
         self.font = [UIFont fontWithName:@"AmericanTypewriter-Bold" size:13];
 //        [UIFont fontWithName:@"Helvetica-Bold" size:20]
+        
     }
 
     return self;

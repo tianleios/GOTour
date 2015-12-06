@@ -95,7 +95,7 @@
 
 - (void)moreAction
 {
-    NSLog(@"点击moreBUt");
+    
     _moreBlock();
 }
 - (void)awakeFromNib {

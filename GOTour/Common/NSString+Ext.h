@@ -12,4 +12,5 @@
 
 
 +(CGSize)calculateStringSize:(CGSize)size string:(NSString *)string font:(UIFont *)font;
+
 @end

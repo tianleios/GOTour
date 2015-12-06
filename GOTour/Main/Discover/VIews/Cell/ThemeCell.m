@@ -49,6 +49,7 @@
     }
     _urlString = _collectionModel.url;
     NSURL *url = [NSURL URLWithString:_collectionModel.bg_pic[0]];
+    _imageView.contentMode = UIViewContentModeScaleAspectFill;
     [_imageView sd_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"home_prospect_tb.png"]];
 }
 

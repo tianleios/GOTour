@@ -30,6 +30,7 @@
         
         _scrollView = [[TLScrollVIew alloc]initWithFrame:self.bounds];
         _scrollView.delegate = self;
+        _scrollView.interval = 3;
         _scrollView.userInteractionEnabled = YES;
         [self.contentView addSubview:_scrollView];
         
@@ -52,17 +53,28 @@
 
         [urlStrings addObject:str];
     }
+    [_scrollView.timer invalidate];
+   
      _scrollView.URLArray = urlStrings;
+    
+    
+    
     CGSize size = [_pageControl sizeForNumberOfPages:articles.count];
     _pageControl.frame = CGRectMake(self.frame.size.width/2 - size.width/2, self.frame.size.height - 40, size.width, 40);
     _pageControl.numberOfPages = _articles.count;
     _pageControl.currentPage = _scrollView.contentOffset.x/_scrollView.frame.size.width;
     
 }
+
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    
     CGFloat offSetX = scrollView.contentOffset.x;
     _pageControl.currentPage = offSetX/_scrollView.frame.size.width;
     _numPage = _pageControl.currentPage;
+    
+    _scrollView.last = scrollView.contentOffset.x/_scrollView.frame.size.width;
+    //
 }
+
 @end

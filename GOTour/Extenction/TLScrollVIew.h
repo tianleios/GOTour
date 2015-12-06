@@ -13,10 +13,16 @@
 
 @property (nonatomic, assign) NSInteger pageNum;
 @property (nonatomic, strong) NSTimer *timer;
-@property (nonatomic, strong) NSArray *URLArray;
 
-@property (nonatomic, strong) NSArray *titleArray;
-@property (nonatomic, strong) NSArray *subTitleArray;
+@property (nonatomic, copy) NSArray *URLArray;
+
+@property (nonatomic, copy) NSArray *titleArray;
+@property (nonatomic, copy) NSArray *subTitleArray;
+
+@property (nonatomic, assign) CGFloat interval;
+
+@property (nonatomic, assign) NSInteger last;
+
 
 @property (nonatomic, strong) MainCollectionModel *mainCollectionModel;
 

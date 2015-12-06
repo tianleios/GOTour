@@ -8,13 +8,18 @@
 //多方调试不成功 废弃
 
 #import <UIKit/UIKit.h>
-
+#import "UMSocial.h"
 
 @class SelectModel;
-@interface TLDetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate>
+@interface TLDetailViewController : UIViewController<UITableViewDataSource, UITableViewDelegate,UIScrollViewDelegate,UMSocialUIDelegate>
 
 @property (nonatomic, strong) SelectModel *selectM;
 @property (nonatomic, strong) UIImage *imageCache;
+
+@property (nonatomic, assign) BOOL isLike;
+
+@property (nonatomic, strong) NSNumber *dataID;
+
 
 
 

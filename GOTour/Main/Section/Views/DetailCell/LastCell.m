@@ -32,7 +32,7 @@
     cell.backgroundView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"activity_Tit.png"]];
     
    CellAssessoryBut *but = [[CellAssessoryBut alloc]initWithFrame:CGRectMake(0, 0, 30, 30) withType:flag];
-    
+//    but.backgroundColor = [UIColor redColor];
     but.block = block;
    
     

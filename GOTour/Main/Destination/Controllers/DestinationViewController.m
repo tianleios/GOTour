@@ -35,6 +35,11 @@
 @end
 
 @implementation DestinationViewController
+
+-(void)dealloc
+{
+    NSLog(@"dealloc destination被销毁");
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -52,7 +57,6 @@
 //    self.edgesForExtendedLayout = UIRectEdgeTop;
     //请求数据
     [self requestData];
-    
 }
 - (void)addLeftItem
 {
@@ -99,7 +103,7 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     CGFloat Y = CGRectGetMaxY(self.navigationController.navigationBar.frame);
-    CGRect frame = CGRectMake(0, Y, kScreenWidth, kScreenHeight -Y - 49);
+    CGRect frame = CGRectMake(0, Y, kScreenWidth, kScreenHeight - 49 - Y);
     
     UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:frame collectionViewLayout:_flowLayout];
     [self.view addSubview:collectionView];
@@ -107,7 +111,7 @@
     _collectionView = collectionView;
     
     _collectionView.backgroundColor = [UIColor whiteColor];
-//    NSLog(@"%@",_collectionView);
+
     //注册
     [_collectionView registerClass:[FirstCollectionCell class] forCellWithReuseIdentifier:kResuableImageID];
     
@@ -201,6 +205,8 @@
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    [[SDImageCache sharedImageCache] clearMemory];
+
     // Dispose of any resources that can be recreated.
 }
 

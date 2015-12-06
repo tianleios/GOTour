@@ -16,7 +16,8 @@
 -(void)setDetailM:(DetailModel *)detailM
 {
     _detailM = detailM;
-//    NSLog(@"%@",_detailM.content.text);
+
+    _imageUrls = [NSMutableArray array];
     
     //标题
     if ([detailM.type isEqualToString:@"head"]) {
@@ -50,6 +51,8 @@
         CGFloat H = W * scale ;
         _imageFrame = CGRectMake(kDetailCellMargin, kMargin, W,H);
         _rowHeight = H + 2*kMargin;
+        
+        
         
     }
     if ([detailM.type isEqualToString:@"referrer"]) {

@@ -7,6 +7,7 @@
 //
 
 #import "LocationCell.h"
+#import "SelectModel.h"
 @interface LocationCell()
 
 @property (nonatomic, strong) UIButton *mapBut;
@@ -17,10 +18,10 @@
 @implementation LocationCell
 
 
-+(instancetype)createCellWithAdress:(NSString *)adress mapBlock:(MapBlock)block
++(instancetype)createCellWithModel:(SelectModel *)model mapBlock:(MapBlock)block;
 {
     LocationCell *cell = [[LocationCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    cell.adressLbl.text =[NSString stringWithFormat:@"  %@",adress];
+    cell.adressLbl.text =[NSString stringWithFormat:@" %@",model.address];
     cell.block = block;
     return cell;
 
@@ -37,7 +38,7 @@
         [_mapBut setImage:[UIImage imageNamed:@"activity_map1.png"] forState:UIControlStateNormal];
         [_mapBut addTarget:self action:@selector(mapAction) forControlEvents:UIControlEventTouchUpInside];
         _adressLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth * 3/4 - 10, self.frame.size.height)];
-        _adressLbl.numberOfLines = 0;
+        _adressLbl.numberOfLines = 2;
         _adressLbl.font = [UIFont systemFontOfSize:15];
 
         

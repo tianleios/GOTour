@@ -49,12 +49,14 @@
     
   self.navigationController.navigationBar.hidden = YES;
     _likes = [TLHTTPTool getDataFromDB];
+    [_tableView reloadData];
+
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationController.navigationBar.hidden = YES;
-    
+    NSLog(@"%@",NSHomeDirectory());
     [self setUserView];
     
     [self addTopImage];
@@ -62,29 +64,8 @@
     [self createTableView];
     //设置按钮
     [self addSetingBut];
-    NSLog(@"nihao");
     
     
-    NSString *str = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    
-    NSString *path = [str stringByAppendingPathComponent:@"like.sqlite"];
-    
-    FMDatabase *data = [FMDatabase databaseWithPath:path];
-    
-    if ([data open]) {
-        NSLog(@"打开数据库成功");
-    }else{
-        
-        NSLog(@"打开数据库失败");
-        
-    }
-    
-  FMResultSet *resultSet = [data executeQuery:@"select * from t_like "];
-    if (resultSet.next) {
-        NSLog(@"查到了");
-    }
- 
-    [_tableView reloadData];
 }
 
 /**
@@ -132,7 +113,8 @@
     CGFloat iconY = CGRectGetMaxY(_icon.frame);
     _introLbl = [[UILabel alloc] initWithFrame:CGRectMake(0, iconY + kMargin, kScreenWidth, 30)];
 
-    _introLbl.text = @"收藏把》》》》》》》》》";
+    _introLbl.text = @"田磊";
+    
     _introLbl.font = [UIFont systemFontOfSize:12];
     _introLbl.numberOfLines = 0;
     _introLbl.textAlignment =NSTextAlignmentCenter;
@@ -141,7 +123,7 @@
 
 - (void)createTableView
 {
-    UITableView *tb = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight) style:UITableViewStyleGrouped];
+    UITableView *tb = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight - self.navigationController.navigationBar.frame.size.height - 20) style:UITableViewStyleGrouped];
     [self.view addSubview:tb];
     
     _tableView = tb;
@@ -185,6 +167,7 @@
     ThemeNextCell *cell = [ThemeNextCell createCellWithTableView:tableView];
     
     NSDictionary *dict = _likes[indexPath.row];
+    
     cell.imageCache = dict[@"image"];
     cell.selectM = dict[@"selectM"];
     
@@ -201,7 +184,9 @@
         TLDetailViewController *vc = [[TLDetailViewController alloc] init];
         NSDictionary *dict = _likes[indexPath.row];
         vc.selectM = dict[@"selectM"];
-        
+        vc.isLike = YES;
+        vc.dataID = @([dict[@"identify"] integerValue]);
+       
         [self.navigationController pushViewController:vc animated:YES];
     }
 
@@ -279,6 +264,8 @@
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    [[SDImageCache sharedImageCache] clearMemory];
+
     // Dispose of any resources that can be recreated.
 }
 

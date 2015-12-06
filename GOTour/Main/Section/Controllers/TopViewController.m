@@ -2,7 +2,7 @@
 //  TopViewController.m
 //  旅行
 //
-//  Created by 磊 田 on 15/9/20.
+//  Created by 磊 田 on 15/10/01.
 //  Copyright (c) 2015年 tianLei. All rights reserved.
 //
 
@@ -57,6 +57,12 @@
 
 }
 
+
+-(void)dealloc
+{
+    NSLog(@"topView销毁");
+
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -118,9 +124,10 @@
                             };
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     
+    __weak TopViewController *weakVC = self;
     [manager GET:url parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
         //数据解析
-         [self openData:responseObject];
+         [weakVC openData:responseObject];
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         
@@ -345,7 +352,7 @@
     _titleView = [[UIView alloc]init];
     UILabel *lbl1 = [[UILabel alloc]initWithFrame:CGRectMake(0, 20, kScreenWidth, 40)];
     lbl1.text = _collectionM.title;
-    lbl1.backgroundColor = [UIColor redColor];
+//    lbl1.backgroundColor = [UIColor redColor];
     [_titleView addSubview:lbl1];
     lbl1.textAlignment = NSTextAlignmentCenter;
     lbl1.font = [UIFont systemFontOfSize:25];
@@ -357,7 +364,7 @@
         lbl2.frame = CGRectMake(0, 60, kScreenWidth, 30);
         lbl2.text = _collectionM.sub_title;
         [_titleView addSubview:lbl2];
-        lbl2.backgroundColor = [UIColor orangeColor];
+//        lbl2.backgroundColor = [UIColor orangeColor];
 
         lbl2.textAlignment = NSTextAlignmentCenter;
         lbl2.font = [UIFont systemFontOfSize:14];
@@ -385,6 +392,8 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    [[SDImageCache sharedImageCache] clearMemory];
+    NSLog(@"top收到内存警告");
     // Dispose of any resources that can be recreated.
 }
 

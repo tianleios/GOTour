@@ -54,6 +54,7 @@
     _select = select;
     
     _imageV.frame = CGRectMake(kMargin, kMargin/2, 1.46*kScreenWidth/3.9, kScreenWidth/3.9);
+    _imageV.clipsToBounds = YES;
     UIImage *image = [UIImage imageNamed:@"UMS_nav_bar_bg_black@2x.png"];
     NSURL *url = [NSURL URLWithString:_select.bg_pic[0]];
     [_imageV sd_setImageWithURL:url placeholderImage:image];

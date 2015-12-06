@@ -42,7 +42,7 @@
     _firstDM = firstDM;
     _imageV.frame = self.bounds;
     NSURL *url = [NSURL URLWithString:_firstDM.bg_pic];
-
+    _imageV.contentMode = UIViewContentModeScaleAspectFill;
     [_imageV sd_setImageWithURL:url  placeholderImage:[UIImage imageNamed:@"home_prospect_tb.png"] ];
     
     _lbl.frame = CGRectMake(2*kMargin, self.bounds.size.height *4/5, self.bounds.size.width - 2*kMargin ,  self.bounds.size.height /5);

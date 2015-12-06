@@ -26,6 +26,7 @@
  */
 
 + (void)deleteDataByID:(NSNumber *)ID;
+
 /**
  * 首页封装的请求数据操作
  */
@@ -34,6 +35,6 @@
 + (void)requestDataWithUrl:(NSString *)urlString parameters:(NSDictionary *)dict success:(void(^)(id responseObject))successBlock fail:(void(^)(id error))failBlock;
 
 /**
- *  bianxie
+ *  保存主页数据
  */
 @end

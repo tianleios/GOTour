@@ -22,6 +22,8 @@
 //时间 日期
 @property (nonatomic, strong) TLWhereWhenLikeVIew *bootomView;
 
+@property (nonatomic, assign) BOOL isLike;
+
 /**
  * 是否是本地图片
  */

@@ -51,6 +51,12 @@
     self.navigationController.navigationBar.hidden = NO;
 
 }
+
+-(void)dealloc
+{
+    NSLog(@"nextdetail销毁");
+
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
      self.navigationController.navigationBar.hidden = NO;
@@ -260,6 +266,8 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+    [[SDImageCache sharedImageCache] clearMemory];
+
     // Dispose of any resources that can be recreated.
 }
 

@@ -52,7 +52,7 @@
             [_likers addObject:model];
             
         }
-        NSLog(@"%d",_likers.count);
+
         [self.tableView reloadData];
     } fail:^(id error) {
         
@@ -60,10 +60,7 @@
     }];
 
 }
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
+
 
 #pragma mark - Table view data source
 
@@ -90,6 +87,13 @@
     
 
     return 50 + kMargin;
+}
+
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    [[SDImageCache sharedImageCache] clearMemory];
 }
 /*
 // Override to support conditional editing of the table view.

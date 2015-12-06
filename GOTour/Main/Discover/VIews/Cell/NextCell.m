@@ -45,6 +45,7 @@
     _textLbl.text = _nextModel.title;
     _textLbl.numberOfLines = 0;
     NSURL *url = [NSURL URLWithString:_nextModel.bg_pic];
+    _imageView.contentMode = UIViewContentModeScaleAspectFill;
     [_imageView sd_setImageWithURL:url  placeholderImage:[UIImage imageNamed:@"home_prospect_tb.png"]];
 }
 

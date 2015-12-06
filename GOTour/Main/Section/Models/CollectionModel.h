@@ -18,7 +18,7 @@
 @property (nonatomic, strong) NSNumber *ID;
 
 @property (nonatomic, copy) NSString *short_desc;
-@property (nonatomic, copy) NSString *layout;
+@property (nonatomic, copy) NSNumber *layout;
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, copy) NSString *sub_title;
 @property (nonatomic, strong) NSArray *bg_pic;//背景图片的url 可能有多个
