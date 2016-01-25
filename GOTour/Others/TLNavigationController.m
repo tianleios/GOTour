@@ -21,15 +21,16 @@
                            NSForegroundColorAttributeName :[UIColor redColor]
                            };
     [item setTitleTextAttributes:dict forState:UIControlStateNormal];
+//    [[UINavigationBar appearance]setBarTintColor:[UIColor cyanColor]];
     
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     self.navigationBar.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"navigationbar_background@2x.png"]];
-    
-    
 }
+
 -(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
    

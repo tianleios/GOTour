@@ -22,6 +22,9 @@
     
 //    [self willChangeValueForKey:<#(nonnull NSString *)#>];
     
+      
+//    [[UINavigationBar appearance]setBarTintColor:[[Theme getInstance]navigationBG]];
+
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window makeKeyAndVisible];
     self.window.rootViewController = [[TLTabBarController alloc]init];

@@ -18,6 +18,7 @@
 #import "MainCollectionModel.h"
 #import "SelectionCell.h"
 #import <Social/Social.h>
+#import <MessageUI/MessageUI.h>
 //#import "CollectionCell.h"
 
 #import "SelectModel.h"
@@ -33,7 +34,7 @@
 #import "NSString+Ext.h"
 
 #define kBaseUrl @"http://appsrv.flyxer.com/api/digest/main"
-@interface SectionViewController ()
+@interface SectionViewController ()<MFMessageComposeViewControllerDelegate>
 
 @property (nonatomic, strong) MBProgressHUD *progressHUD;
 @property (nonatomic, assign) NSInteger currentPage;
@@ -61,6 +62,27 @@
 {
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.hidden = YES;
+    
+    
+    Class messageClass = NSClassFromString(@"MFMessageComposeViewController");
+    if (messageClass != nil) {
+        NSLog(@"存在这个类");
+        if ([messageClass canSendText]) {
+            MFMessageComposeViewController *picker = [[MFMessageComposeViewController alloc] init];
+            picker.messageComposeDelegate = self;
+            //收接者的号码
+            picker.recipients = [NSArray arrayWithObjects:@"15737935671", nil];
+            //短信内容
+            picker.body = [NSString stringWithFormat:@"您申请的录音提取码为：http://www.95105856.com/%@，凭该提取码可在官网公开查询、下载本条通话录音，请妥善保管。客服电话:95105856【安存科技】",@"你们好"];
+            [self presentViewController:picker animated:YES completion:nil];
+        } else {
+//            [Common alert:@"设备没有短信功能"];
+        }
+    } else {
+        
+//        [Common alert:@"当前版本暂不支持短信发送"];
+    }
+
 
 }
 - (void)viewDidLoad {

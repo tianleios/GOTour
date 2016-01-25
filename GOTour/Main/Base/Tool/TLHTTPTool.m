@@ -256,11 +256,11 @@ static FMDatabase *_db;
 
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
 
-    
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     
     //设置请求超时时间
     manager.requestSerializer.timeoutInterval = 10.0;
+    
     
     [manager GET:urlString parameters:dict success:^(AFHTTPRequestOperation *operation, id responseObject) {
         
