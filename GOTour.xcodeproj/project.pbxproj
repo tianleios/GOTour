@@ -19,6 +19,8 @@
 		2E2D488A1C562610009AD6ED /* UMSnsAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E2D487D1C562610009AD6ED /* UMSnsAccountViewController.xib */; };
 		2E2D488B1C562610009AD6ED /* UMSShareListController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E2D487E1C562610009AD6ED /* UMSShareListController.xib */; };
 		2E2D488C1C562610009AD6ED /* UMSocialSDKResourcesNew.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2E2D487F1C562610009AD6ED /* UMSocialSDKResourcesNew.bundle */; };
+		2EFA85631CA38671002046C8 /* userBG.png in Resources */ = {isa = PBXBuildFile; fileRef = 2EFA85621CA38671002046C8 /* userBG.png */; };
+		2EFA85661CA39375002046C8 /* TLLoginVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 2EFA85651CA39375002046C8 /* TLLoginVC.m */; };
 		EA4DD1B91BD284BD003EFC31 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA4DD1B81BD284BD003EFC31 /* Launch Screen.storyboard */; };
 		EA7311C51BD76050000C11CF /* MJPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = EA7311B71BD76050000C11CF /* MJPhoto.m */; };
 		EA7311C61BD76050000C11CF /* MJPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = EA7311B81BD76050000C11CF /* MJPhotoBrowser.bundle */; };
@@ -603,6 +605,9 @@
 		2E2D487E1C562610009AD6ED /* UMSShareListController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UMSShareListController.xib; sourceTree = "<group>"; };
 		2E2D487F1C562610009AD6ED /* UMSocialSDKResourcesNew.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = UMSocialSDKResourcesNew.bundle; sourceTree = "<group>"; };
 		2E2D48801C562610009AD6ED /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/UMSocialLocalizable.strings"; sourceTree = "<group>"; };
+		2EFA85621CA38671002046C8 /* userBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = userBG.png; sourceTree = "<group>"; };
+		2EFA85641CA39375002046C8 /* TLLoginVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLLoginVC.h; sourceTree = "<group>"; };
+		2EFA85651CA39375002046C8 /* TLLoginVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLLoginVC.m; sourceTree = "<group>"; };
 		EA4DD1B81BD284BD003EFC31 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		EA7311B61BD76050000C11CF /* MJPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhoto.h; sourceTree = "<group>"; };
 		EA7311B71BD76050000C11CF /* MJPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhoto.m; sourceTree = "<group>"; };
@@ -1401,6 +1406,15 @@
 			path = SocialSDKXib;
 			sourceTree = "<group>";
 		};
+		2EFA85611CA38592002046C8 /* BG */ = {
+			isa = PBXGroup;
+			children = (
+				2EFA85621CA38671002046C8 /* userBG.png */,
+			);
+			name = BG;
+			path = activity;
+			sourceTree = "<group>";
+		};
 		EA7311B51BD76050000C11CF /* MJPhotoBrowser */ = {
 			isa = PBXGroup;
 			children = (
@@ -1653,6 +1667,8 @@
 		EA7EB2F61BCAA9DB005DB9C4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2EFA85641CA39375002046C8 /* TLLoginVC.h */,
+				2EFA85651CA39375002046C8 /* TLLoginVC.m */,
 				EADFD57A1BCE966700D2DE51 /* UserViewController.h */,
 				EADFD57B1BCE966700D2DE51 /* UserViewController.m */,
 				EA8C0C5F1BDC7F8D0099404C /* SetTableViewController.h */,
@@ -2100,6 +2116,7 @@
 		EA7EB43B1BCAAB28005DB9C4 /* 旅行图片  */ = {
 			isa = PBXGroup;
 			children = (
+				2EFA85611CA38592002046C8 /* BG */,
 				EA7EB43C1BCAAB28005DB9C4 /* activity */,
 				EA7EB45E1BCAAB28005DB9C4 /* addAttention1.png */,
 				EA7EB45F1BCAAB28005DB9C4 /* album */,
@@ -2702,6 +2719,7 @@
 				EA7EB7D11BCAAB29005DB9C4 /* web_btn_next.png in Resources */,
 				EA7EB6C71BCAAB29005DB9C4 /* activity_tag.png in Resources */,
 				EA7EB7761BCAAB29005DB9C4 /* share_mail.png in Resources */,
+				2EFA85631CA38671002046C8 /* userBG.png in Resources */,
 				EA7EB6C01BCAAB29005DB9C4 /* activity_moreP.png in Resources */,
 				EA7EB88E1BCAAB29005DB9C4 /* red_anima11@2x.png in Resources */,
 				EA7EB8A91BCAAB29005DB9C4 /* red_anima24.png in Resources */,
@@ -3174,6 +3192,7 @@
 				EA7EB67A1BCAAB29005DB9C4 /* AFSecurityPolicy.m in Sources */,
 				EA7EB3591BCAA9DB005DB9C4 /* TLHTTPTool.m in Sources */,
 				EA7EB68F1BCAAB29005DB9C4 /* MJRefreshHeader.m in Sources */,
+				2EFA85661CA39375002046C8 /* TLLoginVC.m in Sources */,
 				EAE5C4AE1BCFA6F000C8AAFC /* FMDatabasePool.m in Sources */,
 				EA7EB35F1BCAA9DB005DB9C4 /* NUllCell.m in Sources */,
 				EA7EB3571BCAA9DB005DB9C4 /* BaseViewController.m in Sources */,

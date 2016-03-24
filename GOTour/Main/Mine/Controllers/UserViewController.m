@@ -12,6 +12,8 @@
 #import "ThemeNextCell.h"
 #import "TLDetailViewController.h"
 #import "FMDatabase.h"
+#import "TLLoginVC.h"
+
 #define topImageHeight kScreenHeight*2.7/8
 @interface UserViewController ()
 
@@ -25,8 +27,8 @@
 @property (nonatomic, weak) UITableView *tableView;
 
 //姓名 和 点击登录 lbl
-@property (nonatomic, weak) UILabel *specialLbl;
-
+//@property (nonatomic, weak) UILabel *specialLbl;
+@property (nonatomic, strong) UIButton *specialBut;
 
 
 @property (nonatomic, strong) UIButton *settingBut;
@@ -36,27 +38,24 @@
 
 @end
 
-@implementation UserViewController
 
-- (void)dealloc
-{
-    NSLog(@"zuihou的控制器 被销毁");
-}
+@implementation UserViewController
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
     
-  self.navigationController.navigationBar.hidden = YES;
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBar.hidden = YES;
     _likes = [TLHTTPTool getDataFromDB];
     [_tableView reloadData];
 
+    
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationController.navigationBar.hidden = YES;
-    NSLog(@"%@",NSHomeDirectory());
+//    NSLog(@"%@",NSHomeDirectory());
     [self setUserView];
     
     [self addTopImage];
@@ -75,32 +74,52 @@
 {
     
     _background = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, topImageHeight)];
-    _background.image = [UIImage imageNamed:@"collect_bg.jpg"];
-    
+    _background.image = [UIImage imageNamed:@"userBG"];
+    NSLog(@"__%@",_background.image);
     if (_referrer.bg_pic.length != 0) {
         
         NSURL *url = [NSURL URLWithString:_referrer.bg_pic];
         [_background sd_setImageWithURL:url  placeholderImage:[UIImage imageNamed:@"home_prospect_tb.png"]];
     }
-    
     [self.view addSubview:_background];
     
-    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(0, kScreenHeight/8, kScreenWidth, 50)];
-    [self.view insertSubview:lbl aboveSubview:_background];
-    lbl.text = @"点击登录";
-    lbl.textColor = [UIColor whiteColor];
-    lbl.textAlignment = NSTextAlignmentCenter;
-    _specialLbl = lbl;
+    
+//    _background.backgroundColor = [UIColor cyanColor];
+    UIButton *but = [[UIButton alloc] initWithFrame:CGRectMake(0, kScreenHeight/8, kScreenWidth, 50)];
+   
+    [but setTitle:@"点击登录" forState:UIControlStateNormal];
+    _specialBut = but;
+    
+    [_specialBut setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
+    [but addTarget:self action:@selector(loginAction) forControlEvents:UIControlEventTouchUpInside];
+    
+    
 }
-- (void) addSetingBut
+- (void)loginAction
+{
+    
+    TLLoginVC *lvc = [[TLLoginVC alloc] init];
+    lvc.loginBlock = ^(){
+    
+        [_specialBut setTitle:@"Hi! Today" forState:UIControlStateNormal];
+    
+    };
+    [self presentViewController:lvc animated:YES completion:^{
+        
+    }];
+
+}
+
+- (void)addSetingBut
 {
     _settingBut = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth - 50, 20, 40, 40)];
     
     [_settingBut addTarget:self action:@selector(setAction) forControlEvents:UIControlEventTouchUpInside];
-    [_settingBut setImage:[UIImage imageNamed:@"034@2x.png"] forState:UIControlStateNormal];
+    [_settingBut setImage:[UIImage imageNamed:@"btn_setting_Red.png"] forState:UIControlStateNormal];
     
     [self.view insertSubview:_settingBut aboveSubview:_tableView];
 }
+
 - (void)setUserView
 {
     
@@ -132,13 +151,16 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
+     [self.view insertSubview:_specialBut aboveSubview:_tableView];
 }
+
 
 #pragma 数据源
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
    return 2;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0) {
@@ -148,13 +170,8 @@
    return _likes.count;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-        
-    
-    
+{////////////////////////////////\\\///////////////////////////////////////////////
     if (indexPath.section == 0) {
         UITableViewCell *cell  = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         
@@ -164,17 +181,13 @@
         return cell;
     
     }
+    
     ThemeNextCell *cell = [ThemeNextCell createCellWithTableView:tableView];
-    
     NSDictionary *dict = _likes[indexPath.row];
-    
     cell.imageCache = dict[@"image"];
     cell.selectM = dict[@"selectM"];
-    
     return cell;
     
-    
-
 }
 
 #pragma - mark 代理方法
@@ -190,14 +203,14 @@
         [self.navigationController pushViewController:vc animated:YES];
     }
 
-
 }
+
+//
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (section == 0) {
         
         UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 55)];
-        
         [view1 addSubview:_icon];
         [view1 addSubview:_introLbl];
         
@@ -240,7 +253,7 @@
     
     if (offSetY > 0) {
         _background.transform = CGAffineTransformMakeTranslation(0, -offSetY);
-        _specialLbl.transform = CGAffineTransformMakeTranslation(0, -offSetY);
+        _specialBut.transform = CGAffineTransformMakeTranslation(0, -offSetY);
     }else{
         //计算放大倍数
         CGFloat scale = 1 - offSetY/(topImageHeight);
@@ -250,7 +263,7 @@
         frame.origin = CGPointMake(shouldX, 0);
         _background.transform = CGAffineTransformMakeScale(scale, scale);
         _background.frame = CGRectMake(shouldX,0, scale*kScreenWidth, topImageHeight - offSetY);
-        _specialLbl.transform = CGAffineTransformMakeTranslation(0, -offSetY/4);
+        _specialBut.transform = CGAffineTransformMakeTranslation(0, -offSetY/4);
     }
     
 }

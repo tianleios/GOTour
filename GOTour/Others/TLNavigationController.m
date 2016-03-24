@@ -25,6 +25,12 @@
     
 }
 
+
+- (void)injected{
+    NSLog(@"I've been injected: %@", self);
+    
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
 

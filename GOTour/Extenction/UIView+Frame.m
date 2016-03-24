@@ -58,5 +58,20 @@
 {
     return self.frame.size.height;
 }
+//
+-(CGFloat)xx
+{
+    return self.x + self.width;
 
+}
+- (CGFloat)yy
+{
+    return self.y + self.height;
+
+}
+//
+- (void)setXx:(CGFloat)xx
+{
+
+}
 @end

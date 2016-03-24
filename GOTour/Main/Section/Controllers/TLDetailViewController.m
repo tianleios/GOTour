@@ -50,7 +50,7 @@
 @interface TLDetailViewController ()
 
 @property (nonatomic, strong) UIImageView *topIV;
-@property (nonatomic, weak) UITableView *detailTableView;
+@property (nonatomic, weak)   UITableView *detailTableView;
 
 //模型数组
 @property (nonatomic, strong) NSMutableArray *frames;
@@ -349,7 +349,7 @@
             
             [TLHTTPTool deleteDataByID:weakSelf.selectM.ID];
         }else{
-            NSLog(@"%@",weakSelf.dataID);
+//            NSLog(@"%@",weakSelf.dataID);
             [TLHTTPTool deleteDataByID:weakSelf.dataID];
         }
         
@@ -853,7 +853,6 @@
     [super didReceiveMemoryWarning];
     [[SDImageCache sharedImageCache] clearMemory];
 //    [[SDImageCache sharedImageCache] setValue:nil forKey:@"memCache"];
-    NSLog(@"tldetail收到内存警告");
 }
 
 /*

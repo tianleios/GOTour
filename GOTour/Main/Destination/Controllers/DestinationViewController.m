@@ -36,22 +36,20 @@
 
 @implementation DestinationViewController
 
--(void)dealloc
-{
-    NSLog(@"dealloc destination被销毁");
-}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.navigationController.navigationBar.hidden = NO;
+//    [self.navigationController setNavigationBarHidden:YES animated:YES];
 
 }
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"目的地";
+    self.edgesForExtendedLayout = UIRectEdgeNone;
 //    self.navigationController.navigationBar.hidden = NO;
 
-//    self.navigationController.delegate = self;
     [self addLeftItem];
     self.view.backgroundColor = [UIColor whiteColor];
 //    self.edgesForExtendedLayout = UIRectEdgeTop;
@@ -102,8 +100,8 @@
     _flowLayout = flowLayout;
     
     self.view.backgroundColor = [UIColor whiteColor];
-    CGFloat Y = CGRectGetMaxY(self.navigationController.navigationBar.frame);
-    CGRect frame = CGRectMake(0, Y, kScreenWidth, kScreenHeight - 49 - Y);
+//    CGFloat Y = CGRectGetMaxY(self.navigationController.navigationBar.frame);
+    CGRect frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight - 49 - 64);
     
     UICollectionView *collectionView = [[UICollectionView alloc]initWithFrame:frame collectionViewLayout:_flowLayout];
     [self.view addSubview:collectionView];

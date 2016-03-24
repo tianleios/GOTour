@@ -40,7 +40,7 @@
         //返回按钮
         UIButton *backBut = [[UIButton alloc]initWithFrame:CGRectMake(15, height/2 - 20 , 40, 40)];
         
-        [backBut setImage:[UIImage imageNamed:@"button_back@2x.png"] forState:UIControlStateNormal];
+        [backBut setImage:[UIImage imageNamed:@"btn_back2.png"] forState:UIControlStateNormal];
         [backBut addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
        
         [self addSubview:backBut];
